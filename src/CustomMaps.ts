@@ -1,6 +1,12 @@
 import { Company } from "./Company";
 import { User } from "./User";
 
+interface Mappable{
+    location:{
+lat:number,
+lng:number
+    }
+}
 export class CustomMaps{
  private googleMap:google.maps.Map;
     constructor(divId:string){
@@ -12,7 +18,7 @@ export class CustomMaps{
             }
         })
     }
-   addMarker(mappable:User|Company):void{
+   addMarker(mappable:Mappable):void{
     
     new google.maps.Marker({
                 map:this.googleMap,
