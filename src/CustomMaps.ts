@@ -1,33 +1,45 @@
-import { Company } from "./Company";
-import { User } from "./User";
 
-interface Mappable{
-    location:{
-lat:number,
-lng:number
-    }
+export interface Mappable{
+    location: {
+        lat: number,
+        lng: number
+    },
+    title:string,
+    markerContent():string
 }
 export class CustomMaps{
  private googleMap:google.maps.Map;
     constructor(divId:string){
         this.googleMap=new google.maps.Map(document.getElementById(divId) as HTMLElement,{
-            zoom:1,
+            zoom:2,
             center:{
                 lat:0,
                 lng:0
-            }
+            },
+            
         })
     }
-   addMarker(mappable:Mappable):void{
-    
-    new google.maps.Marker({
-                map:this.googleMap,
-                position:{
-                    lat:mappable.location.lat,
-                    lng:mappable.location.lng
-                },
-                
-            })
-   }
+    addMarker(mappable: Mappable): void {
+
+        const marker = new google.maps.Marker({
+            map: this.googleMap,
+            position: {
+                lat: mappable.location.lat,
+                lng: mappable.location.lng
+            },
+            title:mappable.title
+
+        })
+        marker.addListener("click", () => {
+            const infowindow = new google.maps.InfoWindow({
+             content:mappable.markerContent()
+
+            });
+            infowindow.open(this.googleMap, marker);
+        }
+        )
+    }
+  
+   
     
 }
